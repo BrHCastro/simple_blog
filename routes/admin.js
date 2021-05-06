@@ -29,7 +29,7 @@ router.post('/categorias/nova', (req, res)=>{
     new Categoria(novaCategoria).save()
     .then(()=>{
         console.log('Categoria adicinada com sucesso!')
-        res.redirect('admin/categorias')
+        res.redirect('/admin/categorias')
     }).catch((err)=>{
         console.log(`Erro ao cadastrar nova categoria: ${err}`)
     })

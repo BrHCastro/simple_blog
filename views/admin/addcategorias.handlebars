@@ -3,9 +3,9 @@
     <div class="card-body">
         <form action="/admin/categorias/nova" method="POST">
             <label for="nome">Nome: </label>
-            <input class="form-control" type="text" name="nome" id="nome" placeholder="Nome da catagoria" required="" />
+            <input class="form-control" type="text" name="nome" id="nome" placeholder="Nome da catagoria" required="" onkeyup="getSlug()" />
             <label for="slug">Slug: </label>
-            <input class="form-control" type="text" name="slug" id="slug" placeholder="Slug da categoria" required="" />
+            <input class="form-control disabled" type="text" name="slug" id="slug" placeholder="Slug da categoria" />
             <br />
             <button type="submit" class="btn btn-success">Criar</button>
         </form>
