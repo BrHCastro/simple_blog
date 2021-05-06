@@ -2,7 +2,7 @@
 const express = require('express')
 const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const admin = require('./routes/admin')
 const path = require('path')
 
@@ -18,7 +18,13 @@ const app = express()
     app.set('view engine', 'handlebars')
 
     // Mongoose..................................................
-        // todo#
+    mongoose.Promise = global.Promise
+    mongoose.connect('mongodb://localhost/blogapp', {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(()=>{
+        console.log('conectado com sucesso!')
+    }).catch((err)=>{
+        console.log(`Erro: ${err}`)
+    })
 
     // Public....................................................
     app.use(express.static(path.join(__dirname,"public")))
