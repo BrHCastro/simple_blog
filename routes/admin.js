@@ -8,12 +8,12 @@ router.get('/', (req, res)=>{
     res.render("admin/index")
 })
 
-router.get('/posts', (req, res)=>{
-    res.send('Página de posts')
-})
+// router.get('/posts', (req, res)=>{
+//     res.send('Página de posts')
+// })
 
 router.get('/categorias', (req, res)=>{
-    Categoria.find().lean().sort({date: 'desc'}).then((categorias)=>{
+    Categoria.find().sort({date: 'DESC'}).lean().then((categorias)=>{
         res.render('admin/categorias', {categorias: categorias})
     }).catch((err)=>{
         req.flash('error_msg', `Houve um erro ao carregar as categorias`)
@@ -108,6 +108,19 @@ router.post('/categorias/edit', (req, res) => {
             res.redirect('/admin/categorias')
         })
     }
+})
+
+router.post('/categorias/delete', (req, res) => {
+    let nome = req.body.nome
+    let id = req.body.id
+    Categoria.remove({_id: id})
+    .then(()=>{
+        req.flash('success_msg', `Categoria ${nome} removida com sucesso!`)
+        res.redirect('/admin/categorias')
+    }).catch(()=>{
+        req.flash('error_msg', `Erro ao excluir categora ${req.body.nome}`)
+        res.redirect('admin/categorias')
+    })
 })
 
 module.exports = router

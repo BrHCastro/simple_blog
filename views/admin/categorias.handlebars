@@ -10,9 +10,14 @@
             <small>Slug: {{slug}}</small><br />
             <small>Data da criação: {{date}}</small>
             <a class="float-end" href="/admin/categorias/edit/{{_id}}"><button class="btn btn-warning">Editar</button></a>
+            <form class="d-inline" action="/admin/categorias/delete" method="POST">
+                <input type="hidden" name="id" value="{{_id}}" />
+                <input type="hidden" name="nome" value="{{nome}}">
+                <a class="float-end me-2"><button class="btn btn-danger">Excluir</button></a>
+            </form>
         </div>
     </div>
     {{else}}
-
+        <h4>Nenhuma categoria registrada!</h4>
     {{/each}}
 </div>
