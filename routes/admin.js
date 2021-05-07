@@ -123,4 +123,19 @@ router.post('/categorias/delete', (req, res) => {
     })
 })
 
+router.get('/postagens', (req, res) => {
+    res.render('admin/postagens')
+})
+
+router.get('/postagens/add', (req, res) => {
+    Categoria.find().lean()
+    .then((categorias)=>{
+        res.render('admin/addpostagem', {categorias: categorias})
+        console.log(categorias)
+    }).catch((req, res) => {
+        req.flash('error_msg', `Erro ao retornar as categorias`)
+        res.render('admin/postagens')
+    })
+})
+
 module.exports = router
