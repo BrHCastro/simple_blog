@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 require('../models/Categoria')
+require('../models/Posts')
 const Categoria = mongoose.model('categorias')
+const Post = mongoose.model('posts')
 
 router.get('/', (req, res)=>{
     res.render("admin/index")
@@ -124,17 +126,88 @@ router.post('/categorias/delete', (req, res) => {
 })
 
 router.get('/postagens', (req, res) => {
-    res.render('admin/postagens')
+    Post.find().lean().populate('category').sort({date: 'desc'})
+    .then((posts)=>{
+        res.render('admin/postagens', {posts: posts})
+    }).catch((err)=>{
+        req.flash('error_msg', 'Houve um erro ao listar as postagens')
+        res.redirect("/admin")
+    })
 })
 
 router.get('/postagens/add', (req, res) => {
     Categoria.find().lean()
     .then((categorias)=>{
         res.render('admin/addpostagem', {categorias: categorias})
-        console.log(categorias)
     }).catch((req, res) => {
         req.flash('error_msg', `Erro ao retornar as categorias`)
         res.render('admin/postagens')
+    })
+})
+
+router.post('/postagens/nova', (req, res)=>{
+    var erros = []
+
+    if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
+        erros.push({
+            text: "Título Inválido! Registre um título."
+        })
+    }
+
+    if (!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null) {
+        erros.push({
+            text: "Slug Inválido! Registre um slug."
+        })
+    }
+
+    if (!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null) {
+        erros.push({
+            text: "Descrição Inválido! Registre uma descrição."
+        })
+    }
+
+    if (!req.body.conteudo || typeof req.body.conteudo == undefined || req.body.conteudo == null) {
+        erros.push({
+            text: "Conteúdo Inválido! Registre um conteúdo."
+        })
+    }
+
+    if (!req.body.categoria || typeof req.body.categoria == undefined || req.body.categoria == null || req.body.categoria == 0) {
+        erros.push({
+            text: "Categoria Inválido! Registre uma categoria."
+        })
+    }
+
+    if (erros.length > 0) {
+        res.render('admin/addpostagem', {erros: erros})
+    } else {
+
+        const newPost = {
+            title: req.body.nome,
+            slug: req.body.slug,
+            description: req.body.descricao,
+            content: req.body.conteudo,
+            category: req.body.categoria
+        }
+
+        new Post(newPost).save()
+        .then(()=>{
+            req.flash('success_msg', `Post ${req.body.nome} criada com sucesso!`)
+            res.redirect('/admin/postagens')
+        }).catch((err)=>{
+            req.flash('error_msg', `Houve um erro ao criar o post ${req.body.nome}`)
+            res.redirect('/admin/postagens')
+        })
+    }
+})
+
+router.get('/postagens/edit/:id', (req, res)=>{
+    Post.findOne({_id: req.params.id}).lean()
+    .then((posts)=>{
+        res.render('admin/editpostagem', {posts: posts})
+    }).catch((err)=>{
+        req.flash('error_msg', 'Este Post não existe!')
+        res.redirect('/admin/postagens')
     })
 })
 
