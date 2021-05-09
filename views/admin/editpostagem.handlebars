@@ -6,12 +6,25 @@
 <h3>Editar Postagem</h3>
 <div class="card shadow p-3 mb-5 bg-body rounded">
     <div class="card-body">
-        <form action="/admin/postagens/edit" method="POST">
+        <form action="/admin/postagem/edit" method="POST">
             <input type="hidden" name="id" value="{{posts._id}}">
             <label for="nome">Titulo: </label>
-            <input class="form-control" type="text" name="nome" id="nome" placeholder="Título da catagoria" onkeyup="getSlug()" value="{{posts.title}}"/>
+            <input class="form-control" type="text" name="nome" id="nome" placeholder="Título da postagem" onkeyup="getSlug()" value="{{posts.title}}" />
             <label for="slug">Slug: </label>
-            <input class="form-control disabled" type="text" name="slug" id="slug" placeholder="Slug da categoria" value="{{posts.slug}}"/>
+            <input class="form-control disabled" type="text" name="slug" id="slug" placeholder="Slug da postagem" value="{{posts.slug}}" />
+            <label for="descricao">Descrição:</label>
+            <input class="form-control" type="text" name="descricao" id="descricao" placeholder="Descrição da postagem" value="{{posts.description}}" />
+            <label for="conteudo">Conteúdo:</label>
+            <textarea class="form-control" name="conteudo" id="conteudo" cols="30" rows="10">{{posts.content}}</textarea>
+            <label for="categoria">Categoria:</label>
+            <select class="form-select" name="categoria" id="categoria">
+                <option value="0">Selecione uma categoria...</option>
+            {{#each categorias}}
+                <option value="{{_id}}">{{slug}}</option>
+            {{else}}
+                <option value="0">Nenhum categoria registrada</option>
+            {{/each}}
+            </select>
             <br />
             <button type="submit" class="btn btn-warning">Editar</button>
 

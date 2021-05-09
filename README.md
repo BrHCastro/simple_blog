@@ -12,6 +12,9 @@
 - [x] Express Session (npm i --save express-session)
 - [x] Connect Flash (npm i --save connect-flash)
 
+### Banco de dados:
+- [x] Mongodb / Mongoose (npm i --save mongoose)
+
 ---
 
 ## Iniciando com a estrutura do _**projeto**_...
