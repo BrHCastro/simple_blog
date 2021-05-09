@@ -6,6 +6,7 @@ require('../models/Posts')
 const Categoria = mongoose.model('categorias')
 const Post = mongoose.model('posts')
 
+//Rota principal para admin.............................................
 router.get('/', (req, res)=>{
     res.render("admin/index")
 })
@@ -14,6 +15,7 @@ router.get('/', (req, res)=>{
 //     res.send('Página de posts')
 // })
 
+//Rota para lista de categorias.........................................
 router.get('/categorias', (req, res)=>{
     Categoria.find().sort({date: 'DESC'}).lean().then((categorias)=>{
         res.render('admin/categorias', {categorias: categorias})
@@ -23,10 +25,12 @@ router.get('/categorias', (req, res)=>{
     })
 })
 
+//Rota para página de criar categoria..................................
 router.get('/categorias/add', (req, res)=>{
     res.render('admin/addcategorias')
 })
 
+//Rota para adicionar categoria ao banco...............................
 router.post('/categorias/nova', (req, res)=>{
     var erros = []
 
@@ -62,6 +66,7 @@ router.post('/categorias/nova', (req, res)=>{
     }
 })
 
+//Rota para editar a categoria.....................................................
 router.get('/categorias/edit/:id', (req, res)=>{
     Categoria.findOne({_id: req.params.id}).lean()
     .then((categorias)=>{
@@ -72,6 +77,7 @@ router.get('/categorias/edit/:id', (req, res)=>{
     })
 })
 
+//Rota para fazer o update da categoria no banco
 router.post('/categorias/edit', (req, res) => {
     var erros = []
 
@@ -112,6 +118,7 @@ router.post('/categorias/edit', (req, res) => {
     }
 })
 
+//Rota para deletar categoria...................................................
 router.post('/categorias/delete', (req, res) => {
     let nome = req.body.nome
     let id = req.body.id
@@ -125,6 +132,7 @@ router.post('/categorias/delete', (req, res) => {
     })
 })
 
+//Rota para listar postagens......................................................
 router.get('/postagens', (req, res) => {
     Post.find().lean().populate('category').sort({date: 'desc'})
     .then((posts)=>{
@@ -135,6 +143,7 @@ router.get('/postagens', (req, res) => {
     })
 })
 
+//Rota para criar nova postagem....................................................
 router.get('/postagens/add', (req, res) => {
     Categoria.find().lean()
     .then((categorias)=>{
@@ -145,6 +154,7 @@ router.get('/postagens/add', (req, res) => {
     })
 })
 
+//Rota para adicionar nova postagem no banco........................................
 router.post('/postagens/nova', (req, res)=>{
     var erros = []
 
@@ -201,14 +211,83 @@ router.post('/postagens/nova', (req, res)=>{
     }
 })
 
-router.get('/postagens/edit/:id', (req, res)=>{
+//Rota para editar a postagem....................................................
+router.get('/postagem/edit/:id', (req, res)=>{
     Post.findOne({_id: req.params.id}).lean()
     .then((posts)=>{
-        res.render('admin/editpostagem', {posts: posts})
+        
+    Categoria.find().lean()
+    .then((categorias)=>{
+        res.render('admin/editpostagem', {categorias: categorias, posts: posts})
+    }).catch((req, res) => {
+        req.flash('error_msg', `Erro ao retornar as categorias`)
+        res.render('admin/postagens')
+    })
+
     }).catch((err)=>{
         req.flash('error_msg', 'Este Post não existe!')
         res.redirect('/admin/postagens')
     })
+})
+
+//Rota para fazer o update da postagem.
+router.post('/postagem/edit', (req, res)=>{
+    var erros = []
+
+    if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
+        erros.push({
+            text: "Título Inválido! Registre um título."
+        })
+    }
+
+    if (!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null) {
+        erros.push({
+            text: "Slug Inválido! Registre um slug."
+        })
+    }
+
+    if (!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null) {
+        erros.push({
+            text: "Descrição Inválido! Registre uma descrição."
+        })
+    }
+
+    if (!req.body.conteudo || typeof req.body.conteudo == undefined || req.body.conteudo == null) {
+        erros.push({
+            text: "Conteúdo Inválido! Registre um conteúdo."
+        })
+    }
+
+    if (!req.body.categoria || typeof req.body.categoria == undefined || req.body.categoria == null || req.body.categoria == 0) {
+        erros.push({
+            text: "Categoria Inválido! Registre uma categoria."
+        })
+    }
+
+    if (erros.length > 0) {
+        res.render('admin/editpostagem', {erros: erros})
+    } else {
+        Post.findOne({_id: req.body.id})
+        .then((posts)=>{
+            posts.title = req.body.nome
+            posts.slug = req.body.slug
+            posts.description = req.body.descricao
+            posts.content = req.body.conteudo
+            posts.category = req.body.categoria
+
+            posts.save().then(()=>{
+                req.flash('success_msg', 'Post alterado com sucesso!')
+                res.redirect('/admin/postagens')
+            }).catch((err)=>{
+                req.flash('error_msg', 'Erro ao atualizar a postagem.')
+                res.redirect('/admin/postagens')
+            })
+        }).catch((err)=>{
+            req.flash('error_msg', 'Houve um erro ao salvar a edição')
+            res.redirect('admin/postagens')
+        })
+    }
+    
 })
 
 module.exports = router
