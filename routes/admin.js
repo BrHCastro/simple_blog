@@ -294,7 +294,7 @@ router.post('/postagem/edit', (req, res)=>{
 router.post('/postagem/delete', (req, res) => {
     let nome = req.body.nome
     let id = req.body.id
-    Post.remove({_id: id})
+    Post.deleteOne({_id: id})
     .then(()=>{
         req.flash('success_msg', `Post "${nome}" removida com sucesso!`)
         res.redirect('/admin/postagens')
