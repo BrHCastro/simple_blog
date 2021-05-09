@@ -11,7 +11,7 @@
             <br />
             <small>Categoria: <i>{{category.slug}}</i></small>
             <a class="float-end" href="/admin/postagem/edit/{{_id}}"><button class="btn btn-warning">Editar</button></a>
-            <form class="d-inline" action="/admin/postagens/delete" method="POST">
+            <form class="d-inline" action="/admin/postagem/delete" method="POST">
                 <input type="hidden" name="id" value="{{_id}}" />
                 <input type="hidden" name="nome" value="{{title}}">
                 <a class="float-end me-2"><button class="btn btn-danger">Excluir</button></a>

@@ -290,4 +290,18 @@ router.post('/postagem/edit', (req, res)=>{
     
 })
 
+//Rota para deletar postagem
+router.post('/postagem/delete', (req, res) => {
+    let nome = req.body.nome
+    let id = req.body.id
+    Post.remove({_id: id})
+    .then(()=>{
+        req.flash('success_msg', `Post "${nome}" removida com sucesso!`)
+        res.redirect('/admin/postagens')
+    }).catch(()=>{
+        req.flash('error_msg', `Erro ao excluir o post "${req.body.nome}"`)
+        res.redirect('admin/postagens')
+    })
+})
+
 module.exports = router
