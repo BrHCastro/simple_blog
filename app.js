@@ -7,6 +7,8 @@ const admin = require('./routes/admin')
 const path = require('path')
 const session = require('express-session')
 const flash = require('connect-flash')
+require('./models/Posts')
+const Post = mongoose.model('posts')
 
 const app = express()
 
@@ -46,7 +48,20 @@ const app = express()
     // Public....................................................
     app.use(express.static(path.join(__dirname,"public")))
 
-// Routes........................................................
+    // Routes........................................................
+    app.get('/', (req, res) => {
+        Post.find().lean().populate('categoria').sort({data:"desc"}).then((posts)=>{
+            res.render('index', {posts: posts})
+        }).catch((erro)=>{
+            req.flash('error_msg', 'Erro interno! Não foi possível carregar as postagens')
+            res.redirect('/404')
+        })
+    })
+
+    app.get('/404', (req, res) => {
+        res.send('Erro 404!')
+    })
+
     app.use('/admin', admin)
 // Others........................................................
 
