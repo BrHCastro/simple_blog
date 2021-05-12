@@ -13,10 +13,11 @@
     <div class="card mt-4 mb-4 p-4 shadow rounded">
         <div class="card-body">
             <h3>{{title}}</h3>
-            <small>{{description}}</small>
+            <small><b><i>{{description}}</i></b> | Publicado em: {{date}}</small>
             <hr>
             <p>{{content}}</p>
-            <small style="color: #0d6efd;" class="float-end">#{{slug}}</small>
+            <a href="/postagem/{{slug}}"><button class="btn btn-primary">Leia mais...</button></a>
+            <small style="color: #0d6efd;" class="float-end">#{{category.slug}}</small>
         </div>
     </div>
 {{else}}

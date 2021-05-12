@@ -50,10 +50,27 @@ const app = express()
 
     // Routes........................................................
     app.get('/', (req, res) => {
-        Post.find().lean().populate('categoria').sort({data:"desc"}).then((posts)=>{
+        Post.find().populate('category').sort({data:"desc"}).lean().then((posts)=>{
             res.render('index', {posts: posts})
         }).catch((erro)=>{
             req.flash('error_msg', 'Erro interno! Não foi possível carregar as postagens')
+            res.redirect('/404')
+        })
+    })
+
+    app.get('/postagem/:slug', (req, res) => {
+        Post.findOne({slug: req.params.slug}).populate('category').lean()
+        .then((posts) => {
+
+            if (posts) {
+                res.render('posts/index', {posts: posts})
+            } else {
+                req.flash('error_msg', 'Erro interno! Não foi possível carregar a postagem ou ela não existe')
+                res.redirect('/')
+            }
+
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro interno! Não foi possível carregar a postagem')
             res.redirect('/404')
         })
     })
