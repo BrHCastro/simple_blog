@@ -4,7 +4,7 @@
     <div class="card mt-1 shadow rounded">
         <div class="card-body">
             <a href="/categorias/{{slug}}"><h3>{{nome}}</h3></a>
-            <small>Criado em: {{date}}</small>
+            <small>Criado em: {{#formatDate date}}{{/formatDate}}</small>
         </div>
     </div>
 {{else}}

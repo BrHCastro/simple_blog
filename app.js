@@ -12,6 +12,10 @@ const Post = mongoose.model('posts')
 require('./models/Categoria')
 const Category = mongoose.model('categorias')
 
+//moment lib para formatação de dadas e horas
+const moment = require('moment')
+const localization = require('moment/locale/pt-br')
+
 const app = express()
 
 // Settings......................................................
@@ -35,7 +39,17 @@ const app = express()
     app.use(bodyParser.json())
 
     // HandleBars................................................
-    app.engine('handlebars', handlebars({defaultLayout: 'main'}))
+    app.engine('handlebars', handlebars({defaultLayout: 'main',
+        helpers:{
+            formatDate: (date) => {
+                return moment(date).format('DD/MM/YYYY H:mm:ss')
+            },
+            formatMoment: (date) => {
+                return moment(date).fromNow()
+            }
+        }
+    }))
+
     app.set('view engine', 'handlebars')
 
     // Mongoose..................................................

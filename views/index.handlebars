@@ -13,7 +13,7 @@
     <div class="card mt-4 mb-4 p-4 shadow rounded">
         <div class="card-body">
             <h3>{{title}}</h3>
-            <small><b><i>{{description}}</i></b> | Publicado em: {{date}}</small>
+            <small><b><i>{{description}}</i></b> | {{#formatMoment date}}{{/formatMoment}}</small>
             <hr>
             <p>{{content}}</p>
             <a href="/postagem/{{slug}}"><button class="btn btn-primary">Leia mais...</button></a>

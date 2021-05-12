@@ -5,7 +5,7 @@
     <div class="card mt-1 shadow rounded">
         <div class="card-body">
             <a href="/postagem/{{slug}}"><h3>{{title}}</h3></a>
-            <small>Data da Publicação: {{date}}</small>
+            <small>Data da Publicação: {{#formatDate date}}{{/formatDate}}</small>
         </div>
     </div>
 {{else}}
