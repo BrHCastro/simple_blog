@@ -15,7 +15,7 @@
             <h3>{{title}}</h3>
             <small><b><i>{{description}}</i></b> | {{#formatMoment date}}{{/formatMoment}}</small>
             <hr>
-            <p>{{content}}</p>
+            <p>{{limitString content}}</p>
             <a href="/postagem/{{slug}}"><button class="btn btn-primary">Leia mais...</button></a>
             <small style="color: #0d6efd;" class="float-end">#{{category.slug}}</small>
         </div>

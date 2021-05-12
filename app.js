@@ -39,17 +39,24 @@ const app = express()
     app.use(bodyParser.json())
 
     // HandleBars................................................
-    app.engine('handlebars', handlebars({defaultLayout: 'main',
+
+    const hbs = handlebars.create({
+        defaultLayout: 'main',
+        //create custom helpers
         helpers:{
             formatDate: (date) => {
                 return moment(date).format('DD/MM/YYYY H:mm:ss')
             },
             formatMoment: (date) => {
                 return moment(date).fromNow()
+            },
+            limitString: function(value){
+                return value.substring(0, 400) + '...';
             }
         }
-    }))
+    })
 
+    app.engine('handlebars', hbs.engine)
     app.set('view engine', 'handlebars')
 
     // Mongoose..................................................
