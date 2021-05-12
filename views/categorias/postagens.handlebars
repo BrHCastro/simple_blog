@@ -1,0 +1,13 @@
+<h2>Posts com a categoria <b style="color: #0d6efd;"><i>#{{categorias.nome}}</i></b>...</h2>
+<br />
+
+{{#each posts}}
+    <div class="card mt-1 shadow rounded">
+        <div class="card-body">
+            <a href="/postagem/{{slug}}"><h3>{{title}}</h3></a>
+            <small>Data da Publicação: {{date}}</small>
+        </div>
+    </div>
+{{else}}
+    <h4>Nenhuma há nenhuma postagem nesta categoria</h4>
+{{/each}}

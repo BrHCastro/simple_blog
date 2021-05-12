@@ -9,6 +9,8 @@ const session = require('express-session')
 const flash = require('connect-flash')
 require('./models/Posts')
 const Post = mongoose.model('posts')
+require('./models/Categoria')
+const Category = mongoose.model('categorias')
 
 const app = express()
 
@@ -72,6 +74,38 @@ const app = express()
         }).catch((err) => {
             req.flash('error_msg', 'Erro interno! Não foi possível carregar a postagem')
             res.redirect('/404')
+        })
+    })
+
+    app.get('/categorias', (req, res) => {
+        Category.find().lean()
+        .then((categorias) => {
+            res.render('categorias/index', {categorias: categorias})
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro interno! Não foi possível listar as categorias')
+            res.redirect('/')
+        })
+    })
+
+    app.get('/categorias/:slug', (req, res) => {
+        Category.findOne({slug: req.params.slug}).lean()
+        .then((categorias) => {
+            if (categorias) {
+                Post.find({category: categorias._id}).lean()
+                .then((posts) => {
+                    res.render('categorias/postagens', {posts: posts, categorias: categorias})
+                }).catch((err) => {
+                    req.flash('error_msg', 'Erro interno! Não foi possível localizar as postagens dessa categorias')
+                    res.redirect('/')
+                })
+
+            } else {
+                req.flash('error_msg', 'Nenhuma postagem localizada com essa categoria')
+                res.redirect('/')
+            }
+        }).catch((err) => {
+            req.flash('error_msg', 'Erro interno! Não foi possível carregar a postagem dessa categoria')
+            res.redirect('/')
         })
     })
 
