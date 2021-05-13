@@ -13,7 +13,11 @@ const User = new Schema({
     password: {
         type: String,
         required: true
+    },
+    userLevel: {
+        type: Number,
+        default: 0
     }
 })
 
-mongoose.model('users', User)
+mongoose.model('user', User)

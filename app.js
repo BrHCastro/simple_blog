@@ -11,6 +11,7 @@ require('./models/Posts')
 const Post = mongoose.model('posts')
 require('./models/Categoria')
 const Category = mongoose.model('categorias')
+const user = require('./routes/users')
 
 //moment lib para formatação de dadas e horas
 const moment = require('moment')
@@ -135,6 +136,7 @@ const app = express()
     })
 
     app.use('/admin', admin)
+    app.use('/user', user)
 // Others........................................................
 
 //Server.........................................................
