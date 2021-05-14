@@ -1,6 +1,5 @@
 # Projeto Blog com *NodeJs + MongoDB*
 
-
 * Objetivo do projeto é aprender usar as funcinalidades do node.js com mongoDB
 
 ### Libs usadas no projeto:
@@ -14,6 +13,9 @@
 
 ### Banco de dados:
 - [x] Mongodb / Mongoose (npm i --save mongoose)
+
+### Autenticação do usuário:
+- [x] segurança da senha do usuário com a lib bcryptjs (npm install --save bcriptjs)
 
 ---
 
