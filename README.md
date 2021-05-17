@@ -4,6 +4,7 @@
 
 ### Libs usadas no projeto:
 
+- [x] Express (npm i --save express)
 - [x] Express e HandleBars (npm i --save express-handlebars)
 - [x] Body-Parser (npm i body-parser --save)
 
