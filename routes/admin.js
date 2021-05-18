@@ -5,9 +5,10 @@ require('../models/Categoria')
 require('../models/Posts')
 const Categoria = mongoose.model('categorias')
 const Post = mongoose.model('posts')
+const { checkAdmin } = require('../helpers/checkAdmin')
 
 //Rota principal para admin.............................................
-router.get('/', (req, res)=>{
+router.get('/', checkAdmin, (req, res)=>{
     res.render("admin/index")
 })
 
@@ -16,7 +17,7 @@ router.get('/', (req, res)=>{
 // })
 
 //Rota para lista de categorias.........................................
-router.get('/categorias', (req, res)=>{
+router.get('/categorias', checkAdmin, (req, res)=>{
     Categoria.find().sort({date: 'DESC'}).lean().then((categorias)=>{
         res.render('admin/categorias', {categorias: categorias})
     }).catch((err)=>{
@@ -26,12 +27,12 @@ router.get('/categorias', (req, res)=>{
 })
 
 //Rota para página de criar categoria..................................
-router.get('/categorias/add', (req, res)=>{
+router.get('/categorias/add', checkAdmin, (req, res)=>{
     res.render('admin/addcategorias')
 })
 
 //Rota para adicionar categoria ao banco...............................
-router.post('/categorias/nova', (req, res)=>{
+router.post('/categorias/nova', checkAdmin, (req, res)=>{
     var erros = []
 
     if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
@@ -67,7 +68,7 @@ router.post('/categorias/nova', (req, res)=>{
 })
 
 //Rota para editar a categoria.....................................................
-router.get('/categorias/edit/:id', (req, res)=>{
+router.get('/categorias/edit/:id', checkAdmin, (req, res)=>{
     Categoria.findOne({_id: req.params.id}).lean()
     .then((categorias)=>{
         res.render('admin/editcategorias', {categorias: categorias})
@@ -78,7 +79,7 @@ router.get('/categorias/edit/:id', (req, res)=>{
 })
 
 //Rota para fazer o update da categoria no banco
-router.post('/categorias/edit', (req, res) => {
+router.post('/categorias/edit', checkAdmin, (req, res) => {
     var erros = []
 
     if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
@@ -119,7 +120,7 @@ router.post('/categorias/edit', (req, res) => {
 })
 
 //Rota para deletar categoria...................................................
-router.post('/categorias/delete', (req, res) => {
+router.post('/categorias/delete', checkAdmin, (req, res) => {
     let nome = req.body.nome
     let id = req.body.id
     Categoria.remove({_id: id})
@@ -133,7 +134,7 @@ router.post('/categorias/delete', (req, res) => {
 })
 
 //Rota para listar postagens......................................................
-router.get('/postagens', (req, res) => {
+router.get('/postagens', checkAdmin, (req, res) => {
     Post.find().lean().populate('category').sort({date: 'desc'})
     .then((posts)=>{
         res.render('admin/postagens', {posts: posts})
@@ -144,7 +145,7 @@ router.get('/postagens', (req, res) => {
 })
 
 //Rota para criar nova postagem....................................................
-router.get('/postagens/add', (req, res) => {
+router.get('/postagens/add', checkAdmin, (req, res) => {
     Categoria.find().lean()
     .then((categorias)=>{
         res.render('admin/addpostagem', {categorias: categorias})
@@ -155,7 +156,7 @@ router.get('/postagens/add', (req, res) => {
 })
 
 //Rota para adicionar nova postagem no banco........................................
-router.post('/postagens/nova', (req, res)=>{
+router.post('/postagens/nova', checkAdmin, (req, res)=>{
     var erros = []
 
     if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
@@ -212,7 +213,7 @@ router.post('/postagens/nova', (req, res)=>{
 })
 
 //Rota para editar a postagem....................................................
-router.get('/postagem/edit/:id', (req, res)=>{
+router.get('/postagem/edit/:id', checkAdmin, (req, res)=>{
     Post.findOne({_id: req.params.id}).lean()
     .then((posts)=>{
         
@@ -231,7 +232,7 @@ router.get('/postagem/edit/:id', (req, res)=>{
 })
 
 //Rota para fazer o update da postagem.
-router.post('/postagem/edit', (req, res)=>{
+router.post('/postagem/edit', checkAdmin, (req, res)=>{
     var erros = []
 
     if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
@@ -291,7 +292,7 @@ router.post('/postagem/edit', (req, res)=>{
 })
 
 //Rota para deletar postagem
-router.post('/postagem/delete', (req, res) => {
+router.post('/postagem/delete', checkAdmin, (req, res) => {
     let nome = req.body.nome
     let id = req.body.id
     Post.deleteOne({_id: id})
