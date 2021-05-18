@@ -4,14 +4,16 @@
   "description": "Objetivo do projeto é aprender usar as funcinalidades do node.js com mongoDB",
   "main": "app.js",
   "dependencies": {
-    "body-parser": "^1.19.0",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
     "express-handlebars": "^5.3.2",
+    "express-session": "^1.17.1",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.9",
-    "moment": "^2.29.1"
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {

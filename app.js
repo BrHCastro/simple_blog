@@ -12,6 +12,8 @@ const Post = mongoose.model('posts')
 require('./models/Categoria')
 const Category = mongoose.model('categorias')
 const user = require('./routes/users')
+const passport = require('passport')
+require('./config/auth')(passport)
 
 //moment lib para formatação de dadas e horas
 const moment = require('moment')
@@ -26,6 +28,11 @@ const app = express()
         resave: true,
         saveUninitialized: true
     }))
+
+    // É importante que este metodo fique nesta ordem.
+    app.use(passport.initialize())
+    app.use(passport.session())
+
     app.use(flash())
 
     // Middlewhere...............................................
