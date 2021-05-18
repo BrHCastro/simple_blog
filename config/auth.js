@@ -7,7 +7,7 @@ require('../models/User')
 const User = mongoose.model('user')
 
 module.exports = function(passport) {
-    passport.use(new localStrategy({usernameField: 'email'}, (email, password, done) => {
+    passport.use(new localStrategy({usernameField: 'email', passwordField: 'password'}, (email, password, done) => {
         User.findOne({email: email}).then((user) => {
             if(!user) {
                 return done(null, false, {message: "Usuário inválido!"})
