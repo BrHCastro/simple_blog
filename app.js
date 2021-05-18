@@ -62,6 +62,11 @@ const app = express()
             },
             limitString: function(value){
                 return value.substring(0, 400) + '...';
+            },
+            setUser: (par) => {
+                let name = par.name
+                name = name.split(' ')
+                return name[0]
             }
         }
     })
