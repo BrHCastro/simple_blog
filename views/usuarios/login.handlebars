@@ -1,9 +1,16 @@
 <div class="card mt-4 mb-4 p-4 shadow rounded">
+    <div class="title text-center mb-3">
+        <h2>Faça o seu <span style="color: #0d6efd;">Login</span> <i class="bi bi-lock"></i></h2>
+    </div>
     <div class="card-body">
-        <label for="email">E-mail: </label>
-        <input class="form-control" type="email" name="email" required />
-        <label for="password">Senha:</label>
-        <input class="form-control" type="password" name="password" required />
-        <button class="btn btn-primary" type="submit">Entrar!</button>
+        <form action="" method="POST">
+            <label for="email">E-mail: </label>
+            <input class="form-control" type="email" name="email" required />
+            <label for="password">Senha:</label>
+            <input class="form-control" type="password" name="password" required />
+            <br>
+            <button class="btn btn-primary" type="submit">Entrar!</button>
+            <span class="float-end mt-3">Ainda não tem uma conta? Cadastre-se <a style="text-decoration: none; font-weight: bold;" href="/user/register">aqui</a></span>
+        </form>
     </div>
 </div>
