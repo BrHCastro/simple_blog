@@ -14,6 +14,7 @@ const Category = mongoose.model('categorias')
 const user = require('./routes/users')
 const passport = require('passport')
 require('./config/auth')(passport)
+const db = require('./config/db');
 
 //moment lib para formatação de dadas e horas
 const moment = require('moment')
@@ -76,7 +77,7 @@ const app = express()
 
     // Mongoose..................................................
     mongoose.Promise = global.Promise
-    mongoose.connect('mongodb://localhost/blogapp', {useNewUrlParser: true, useUnifiedTopology: true})
+    mongoose.connect(db.mongoURI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(()=>{
         console.log('conectado com sucesso!')
     }).catch((err)=>{
