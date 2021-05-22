@@ -93,7 +93,7 @@ const app = express()
             res.render('index', {posts: posts})
         }).catch((erro)=>{
             req.flash('error_msg', 'Erro interno! Não foi possível carregar as postagens')
-            res.redirect('/404')
+            res.redirect('/')
         })
     })
 
@@ -110,7 +110,7 @@ const app = express()
 
         }).catch((err) => {
             req.flash('error_msg', 'Erro interno! Não foi possível carregar a postagem')
-            res.redirect('/404')
+            res.redirect('/')
         })
     })
 
