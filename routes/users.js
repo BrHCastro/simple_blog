@@ -58,7 +58,7 @@ router.post('/register', (req, res) => {
                                 new User(newUser).save()
                                     .then(() => {
                                         req.flash('success_msg', `Boa, ${req.body.name}! Seu cadastro foi realizado com sucesso! Clique 
-                                        <a style="font-weight: bold; text-decoration: none; color: #0f5132;" href="#">aqui</a> 
+                                        <a style="font-weight: bold; text-decoration: none; color: #0f5132;" href="/user/login">aqui</a> 
                                         e faça o login.`)
 
                                         res.redirect('/user/register')
